@@ -1,0 +1,137 @@
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== BODY ===== */
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  min-height: 100vh;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== MAIN CARD ===== */
+.container {
+  width: 100%;
+  max-width: 700px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* ===== TITLE ===== */
+h1 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #1e3c72;
+}
+
+/* ===== TIMER ===== */
+#timer {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e63946;
+  margin-bottom: 12px;
+}
+
+/* ===== QUESTION BOX ===== */
+#quizContainer {
+  margin-top: 10px;
+}
+
+#quizContainer p {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+/* ===== OPTIONS ===== */
+label {
+  display: block;
+  background: #f1f5f9;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+label:hover {
+  background: #e2e8f0;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+}
+
+/* ===== FEEDBACK COLORS ===== */
+.correct {
+  background: #d1fae5 !important;
+  border-color: #16a34a !important;
+  color: #065f46;
+}
+
+.wrong {
+  background: #fee2e2 !important;
+  border-color: #dc2626 !important;
+  color: #7f1d1d;
+}
+
+/* ===== NEXT BUTTON ===== */
+#nextBtn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  background: #1e3c72;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#nextBtn:hover {
+  background: #16325c;
+}
+
+/* ===== SCORE ===== */
+#score {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  color: #1e3c72;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width: 600px) {
+  h1 {
+    font-size: 22px;
+  }
+
+  #quizContainer p {
+    font-size: 16px;
+  }
+
+  label {
+    font-size: 15px;
+    padding: 10px;
+  }
+
+  #nextBtn {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
