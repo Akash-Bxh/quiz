@@ -125,109 +125,115 @@ const quiz = [
 let currentQ = 0;
 let score = 0;
 let timer;
-let questionLocked = false;
-const timePerQuestion = 5; // ✅ 5 seconds only
+let locked = false;
+const timeLimit = 5;
 
-// ================= SHOW QUESTION =================
+let candidateName = "";
+let candidateEmail = "";
+
+// ================= FORM =================
+function startExam() {
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const error = document.getElementById("error");
+
+  const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+  if (!name) {
+    error.innerText = "Name is required";
+    return;
+  }
+
+  if (!gmailRegex.test(email)) {
+    error.innerText = "Enter a valid Gmail ID (abc@gmail.com)";
+    return;
+  }
+
+  candidateName = name;
+  candidateEmail = email;
+
+  document.getElementById("formBox").style.display = "none";
+  document.getElementById("quizBox").style.display = "block";
+
+  showQuestion();
+}
+
+// ================= QUIZ =================
 function showQuestion() {
   clearInterval(timer);
-  questionLocked = false;
-
-  const container = document.getElementById("quizContainer");
-  container.innerHTML = "";
-  document.getElementById("nextBtn").style.display = "none";
+  locked = false;
 
   const q = quiz[currentQ];
-  container.innerHTML = `<p>${q.question}</p>`;
+  const box = document.getElementById("quizContainer");
+  box.innerHTML = `<p>${q.question}</p>`;
+  document.getElementById("nextBtn").style.display = "none";
 
   for (let key in q.options) {
     const label = document.createElement("label");
-    label.innerHTML = `
-      <input type="radio" name="${q.name}" value="${key}">
-      ${key}: ${q.options[key]}
-    `;
-    label.onclick = () => {
-      if (!questionLocked) {
-        checkAnswer(q.name, q.answer, key, label);
-      }
-    };
-    container.appendChild(label);
+    label.innerHTML = `${key}: ${q.options[key]}`;
+    label.onclick = () => !locked && checkAnswer(label, key, q.answer);
+    box.appendChild(label);
   }
 
-  startTimer(timePerQuestion);
+  startTimer();
 }
 
-// ================= TIMER =================
-function startTimer(seconds) {
-  let time = seconds;
-  document.getElementById("timer").innerText = `Time left: ${time}s`;
+function startTimer() {
+  let t = timeLimit;
+  document.getElementById("timer").innerText = `Time: ${t}s`;
 
   timer = setInterval(() => {
-    time--;
-    document.getElementById("timer").innerText = `Time left: ${time}s`;
-
-    if (time <= 0) {
+    t--;
+    document.getElementById("timer").innerText = `Time: ${t}s`;
+    if (t === 0) {
       clearInterval(timer);
-      lockAndRemoveOptions();
+      lockQuestion();
     }
   }, 1000);
 }
 
-// ================= LOCK & REMOVE OPTIONS =================
-function lockAndRemoveOptions() {
-  questionLocked = true;
-
-  // remove all radio buttons (no marking possible)
-  document.querySelectorAll("input[type='radio']").forEach(input => {
-    input.remove();
-  });
-
-  document.getElementById("nextBtn").style.display = "block";
-}
-
-// ================= CHECK ANSWER =================
-function checkAnswer(name, correct, selected, label) {
-  if (questionLocked) return;
-
+function checkAnswer(label, selected, correct) {
+  locked = true;
   clearInterval(timer);
-  questionLocked = true;
 
   if (selected === correct) {
     label.classList.add("correct");
     score++;
   } else {
     label.classList.add("wrong");
-    document.querySelectorAll(`input[name="${name}"]`).forEach(i => {
-      if (i.value === correct) {
-        i.parentElement.classList.add("correct");
-      }
-    });
   }
-
-  // remove all radio buttons after answering
-  document.querySelectorAll("input[type='radio']").forEach(input => {
-    input.remove();
-  });
 
   document.getElementById("nextBtn").style.display = "block";
 }
 
-// ================= NEXT QUESTION =================
+function lockQuestion() {
+  locked = true;
+  document.getElementById("nextBtn").style.display = "block";
+}
+
 document.getElementById("nextBtn").onclick = () => {
   currentQ++;
-
   if (currentQ < quiz.length) {
     showQuestion();
   } else {
-    // 🔓 unlock only AFTER test ends
-    document.getElementById("quizContainer").innerHTML =
-      "<h2>Test Completed</h2>";
-    document.getElementById("timer").style.display = "none";
-    document.getElementById("nextBtn").style.display = "none";
-    document.getElementById("score").innerText =
-      `Final Score: ${score} / ${quiz.length}`;
+    endExam();
   }
 };
 
-// ================= INIT =================
-showQuestion();
+// ================= SEND RESULT =================
+function endExam() {
+  document.getElementById("quizContainer").innerHTML = "<h3>Test Completed</h3>";
+  document.getElementById("timer").style.display = "none";
+  document.getElementById("nextBtn").style.display = "none";
+  document.getElementById("score").innerText =
+    `Score: ${score} / ${quiz.length}`;
+
+  fetch("YOUR_GOOGLE_SCRIPT_URL", {
+    method: "POST",
+    body: JSON.stringify({
+      name: candidateName,
+      email: candidateEmail,
+      score: score
+    })
+  });
+}
