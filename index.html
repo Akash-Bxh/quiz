@@ -1,34 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TMKOC Hardest Quiz</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TMKOC Quiz</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="container">
-    <h1>TMKOC – Quiz</h1>
+<div class="container">
 
-    <!-- Timer -->
-    <p id="timer">Time left: </p>
+  <!-- FORM -->
+  <div id="formBox">
+    <h2>Candidate Details</h2>
 
-    <!-- Question Area -->
+    <input type="text" id="name" placeholder="Enter your full name" />
+    <input type="email" id="email" placeholder="Enter Gmail ID (abc@gmail.com)" />
+
+    <p id="error"></p>
+
+    <button onclick="startExam()">Start Test</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quizBox" style="display:none;">
+    <h1>TMKOC – Hardest Quiz</h1>
+    <p id="timer"></p>
     <div id="quizContainer"></div>
-
-    <!-- Next Button -->
-    <button id="nextBtn" style="display:none;">Next Question</button>
-
-    <!-- Final Score -->
+    <button id="nextBtn" style="display:none;">Next</button>
     <p id="score"></p>
   </div>
 
-  <!-- JavaScript -->
-  <script src="script.js"></script>
+</div>
 
+<script src="script.js"></script>
 </body>
 </html>
-
