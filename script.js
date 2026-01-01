@@ -228,7 +228,7 @@ function endExam() {
   document.getElementById("score").innerText =
     `Score: ${score} / ${quiz.length}`;
 
-  fetch("YOUR_GOOGLE_SCRIPT_URL", {
+  fetch("https://script.google.com/macros/s/AKfycbw6ad7KOuJh2yy3kp4hOOgyCQN6GCOTUmLTRthX6cIZwumzvpZpphRhff3bOkmkA9RbzA/exec", {
     method: "POST",
     body: JSON.stringify({
       name: candidateName,
@@ -237,3 +237,4 @@ function endExam() {
     })
   });
 }
+
