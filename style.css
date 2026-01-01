@@ -36,6 +36,7 @@ label {
   padding: 10px;
   background: #334155;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .correct { background: #16a34a !important; }
